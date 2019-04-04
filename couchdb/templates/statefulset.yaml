@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "couchdb.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "couchdb.name" . }}
+    helm.sh/chart: {{ include "couchdb.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  serviceName: {{ include "couchdb.fullname" . }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "couchdb.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true" 
+      labels:
+        app.kubernetes.io/name: {{ include "couchdb.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ include "couchdb.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5984
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+              - curl
+              - http://localhost:5984/_up
+          readinessProbe:
+            exec:
+              command:
+              - curl
+              - http://localhost:5984/_up
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"

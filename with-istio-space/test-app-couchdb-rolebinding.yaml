@@ -1,0 +1,15 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRoleBinding
+metadata:
+  name: bind-test-app-service-couchdb-role
+  namespace: with-istio
+spec:
+  subjects:
+  - user: "cluster.local/ns/with-istio/sa/test-app-test-app-chart"
+  # - user: "*"
+    # - user: 'test-app-test-app-chart'
+  # - properties:
+  #     source.namespace: "with-istio"
+  roleRef:
+    kind: ServiceRole
+    name: "couchdb-role"

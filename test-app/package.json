@@ -1,0 +1,22 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "description": "Showcase app for mtls and authZ in istio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "node",
+    "restify",
+    "istio"
+  ],
+  "author": "pieter.vincken@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "nano": "^8.0.0",
+    "restify": "^7.7.0",
+    "restify-await-promise": "^2.1.0"
+  }
+}

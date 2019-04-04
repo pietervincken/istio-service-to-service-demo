@@ -1,0 +1,10 @@
+apiVersion: "rbac.istio.io/v1alpha1"
+kind: ServiceRole
+metadata:
+  name: couchdb-role
+  namespace: with-istio
+spec:
+  rules:
+  - services: ["couchdb.with-istio.svc.cluster.local"]
+    methods: ["GET"]
+    paths: ['*']
