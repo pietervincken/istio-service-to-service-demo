@@ -36,10 +36,10 @@ kubectl exec --namespace $NAMESPACE couchdb-0 -c couchdb -- \
 kubectl port-forward -n $NAMESPACE svc/test-app-test-app-chart 8080:80
 
 ## Start a watch to test the API
-watch curl -sq http://localhost:8080/api/v1/animals/test
+watch -n 1 curl -sq http://localhost:8080/api/v1/animals/test
 
 ## Enable RBAC in with-istio space
-kubectl apply -f istio-install/rbac-config.yaml
+kubectl apply -f with-istio-space/rbac-config.yaml
 
 ## Show that the requests are failing now. This may take up to 60s to happen. 
 
@@ -49,8 +49,13 @@ kubectl apply -f with-istio-space/couchdb-role.yaml
 ## Create role binding for test-app service account to the couchdb-role
 kubectl apply -f with-istio-space/test-app-couchdb-rolebinding.yaml
 
+## Now the API should have access again. 
+
 ## Deploy the same app to the same namespace -> no access. 
-helm upgrade --namespace $NAMESPACE --install test-app-2 test-app/test-app-chart --recreate-pods
+helm template --name test-app-2 ./test-app/test-app-chart > build/test-app-2.yaml
+kubectl apply -f build/test-app-2.yaml --namespace $NAMESPACE
+
+## Port forward the new service
 kubectl port-forward -n $NAMESPACE svc/test-app-2-test-app-chart 8081:80
 
 ## Try to access the second service
