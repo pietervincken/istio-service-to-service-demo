@@ -1,14 +1,5 @@
-# Istio-AuthN-AuthZ-demo
+# Istio: service to service communication
 
-## Istio authentication and authorization
+This is an accopying repository to a blogpost.
 
-- What is AuthN and AuthZ?
-- What is AuthN and AuthZ in Istio?
-- How does Istio provide AuthN?
-- How does Istio perform AuthZ?
-- Demo
-
-## Install
-- `kubectl`
-- `helm`
-- `minikube` or Docker for Mac / Windows.
+Blogpost: TBA
