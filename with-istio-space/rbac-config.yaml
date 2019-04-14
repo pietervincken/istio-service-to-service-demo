@@ -6,14 +6,3 @@ spec:
   mode: 'ON_WITH_INCLUSION'
   inclusion:
     namespaces: ['with-istio']
----
-apiVersion: "networking.istio.io/v1alpha3"
-kind: "DestinationRule"
-metadata:
-  name: "default"
-  namespace: with-istio
-spec:
-  host: "*.local"
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL

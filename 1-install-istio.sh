@@ -12,9 +12,6 @@ kubectl create namespace istio-system
 helm template istio-1.1.1/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system > build/crds.yaml
 kubectl apply -f build/crds.yaml
 
-# wait for the configuration to be picked up
-sleep 60
-
 # This should output 53
 kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l
 
@@ -22,5 +19,5 @@ kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l
 helm template istio-1.1.1/install/kubernetes/helm/istio --name istio --namespace istio-system \
     --values istio-1.1.1/install/kubernetes/helm/istio/values-istio-demo.yaml > build/istio-install.yaml
     
-## Install Helm with the values file.
+## Install Istio based on the template.
 kubectl apply -f build/istio-install.yaml

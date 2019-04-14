@@ -6,9 +6,6 @@ export NAMESPACE=with-istio
 kubectl create namespace $NAMESPACE
 kubectl label namespace $NAMESPACE istio-injection=enabled
 
-## Enable MTLS for $NAMESPACE
-kubectl apply -f with-istio-space/enable-mtls.yaml
-
 ## Deploy CouchDB
 helm template --name couchdb ./couchdb > build/couchdb.yaml
 kubectl apply -f build/couchdb.yaml --namespace $NAMESPACE
@@ -41,10 +38,20 @@ kubectl port-forward -n $NAMESPACE svc/test-app-test-app-chart 8080:80
 ## Start a watch to test the API
 watch -n 1 curl -sq http://localhost:8080/api/v1/animals/test
 
+## Enable MTLS for $NAMESPACE
+kubectl apply -f with-istio-space/enable-mtls.yaml
+
+### Now requests fail because service expects mTLS but client is not using it. HTTP 503 is thrown.
+
+## Enable mTLS for all service to service communication the with-istio namespace
+kubectl apply -f with-istio-space/destination-rule.yaml
+
+### Requests flow again, because mTLS is now working.
+
 ## Enable RBAC in with-istio space
 kubectl apply -f with-istio-space/rbac-config.yaml
 
-## Show that the requests are failing now. This may take up to 60s to happen. 
+## Show that the requests are failing now. This may take up to 60s to happen. HTTP 403 is thrown.
 
 ## Create couchdb-role. This is the role that allows access to couchdb
 kubectl apply -f with-istio-space/couchdb-role.yaml 
