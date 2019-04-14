@@ -20,7 +20,6 @@ const init = async () => {
     }
     apiIsReady = true;
     store = nano.use('animals')
-
 };
 init();
 

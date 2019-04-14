@@ -6,6 +6,9 @@ export NAMESPACE=with-istio
 kubectl create namespace $NAMESPACE
 kubectl label namespace $NAMESPACE istio-injection=enabled
 
+## Enable MTLS for $NAMESPACE
+kubectl apply -f with-istio-space/enable-mtls.yaml
+
 ## Deploy CouchDB
 helm template --name couchdb ./couchdb > build/couchdb.yaml
 kubectl apply -f build/couchdb.yaml --namespace $NAMESPACE
@@ -59,4 +62,4 @@ kubectl apply -f build/test-app-2.yaml --namespace $NAMESPACE
 kubectl port-forward -n $NAMESPACE svc/test-app-2-test-app-chart 8081:80
 
 ## Try to access the second service
-watch curl -sq http://localhost:8081/api/v1/animals/test
+watch -n 1 curl -sq http://localhost:8081/api/v1/animals/test

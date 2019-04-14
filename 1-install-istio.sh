@@ -24,5 +24,3 @@ helm template istio-1.1.1/install/kubernetes/helm/istio --name istio --namespace
     
 ## Install Helm with the values file.
 kubectl apply -f build/istio-install.yaml
-
-kubectl apply -f istio-install/

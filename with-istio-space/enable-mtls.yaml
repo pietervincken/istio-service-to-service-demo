@@ -1,7 +1,8 @@
 apiVersion: "authentication.istio.io/v1alpha1"
-kind: "MeshPolicy"
+kind: "Policy"
 metadata:
   name: "default"
+  namespace: with-istio
 spec:
   peers:
   - mtls: 
